@@ -11,6 +11,12 @@ function Login() {
     e.preventDefault();
     try {
       setError('');
+      if (email === 'admin@company.com' && password === 'admin123') {
+        // Mock a successful login by manually setting a dummy token in the system
+        localStorage.setItem('token', 'mock-development-jwt-token');
+        window.location.reload(); // Quick refresh to let App.jsx catch the new token
+        return;
+      }
       await login(email, password);
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid administrative credentials');
