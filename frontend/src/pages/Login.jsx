@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
-function Login() {
+function Login({ switchToSignup }) {
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -11,12 +11,7 @@ function Login() {
     e.preventDefault();
     try {
       setError('');
-      if (email === 'admin@company.com' && password === 'admin123') {
-        // Mock a successful login by manually setting a dummy token in the system
-        localStorage.setItem('token', 'mock-development-jwt-token');
-        window.location.reload(); // Quick refresh to let App.jsx catch the new token
-        return;
-      }
+      // Fires the real login method from your AuthContext to save JWT tokens
       await login(email, password);
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid administrative credentials');
@@ -54,6 +49,11 @@ function Login() {
           </div>
           <button type="submit" className="login-btn">Login to Dashboard</button>
         </form>
+
+        <p style={{ textAlign: 'center', marginTop: '1.5rem', fontSize: '0.9rem', color: '#64748b' }}>
+          New to the platform?{' '}
+          <span onClick={switchToSignup} style={{ color: '#3b82f6', cursor: 'pointer', fontWeight: '600' }}>Create an Account</span>
+        </p>
       </div>
     </div>
   );
