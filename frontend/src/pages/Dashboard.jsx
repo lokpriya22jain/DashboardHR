@@ -657,192 +657,115 @@ function Dashboard () {
         )}
         
         {activeTab === 'reports' && (
-  <div className="space-y-8 p-6 max-w-7xl mx-auto animate-fade-in text-slate-800">
-    
-    {/* Page Header Area */}
-    <div className="border-b border-gray-100 pb-5">
-      <h2 className="text-2xl font-extrabold text-slate-900 tracking-tight">Analytics & Financial Compliance Reports</h2>
-      <p className="text-sm text-slate-500 mt-1">Generate dynamic computational audits, statutory deductions logs, and export system arrays instantly.</p>
+  <div className="space-y-6 encoding-wrapper class-name-container">
+    {/* Page Header */}
+    <div className="bg-white border border-gray-100 rounded-xl p-6 shadow-sm">
+      <h2 className="text-2xl font-bold text-slate-800 mb-1">
+        Analytics & Financial Compliance Reports
+      </h2>
+      <p className="text-gray-500 text-sm">
+        Generate live computational audits and download analytical data logs instantly.
+      </p>
     </div>
 
-    {/* Report 1, 2 & 5: Payroll & Attendance Consolidated Master Panel */}
-    <div className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden">
-      <div className="p-6 border-b border-slate-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-slate-50/60">
-        <div>
-          <h3 className="font-bold text-slate-900 text-base">1, 2 & 5. Master Payroll Ledger & Performance Metrics</h3>
-          <p className="text-xs text-slate-400 mt-0.5">Calculated tracking parameters across organizational statutory withholdings (TDS, ESIC, PF).</p>
+    {/* Report 1: Master Salary Register */}
+    <div className="bg-white border border-gray-100 rounded-xl shadow-sm p-6">
+      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+        <div className="max-w-2xl">
+          <div className="text-xs font-bold text-emerald-600 uppercase tracking-wider mb-1">Report 01 • Financials</div>
+          <h3 className="text-lg font-semibold text-slate-800 mb-2">
+            Master Salary Register Audit
+          </h3>
+          <p className="text-gray-600 text-sm leading-relaxed">
+            Generates a live, statutory-accurate payroll accounting ledger. It dynamically computes system-wide financial compliance deductions—including TDS (10%), ESIC (0.75%), and PF (12%)—mapped directly from individual base gross salaries.
+          </p>
         </div>
-        <div className="flex flex-wrap gap-2.5">
-          <button 
-            onClick={() => {
-              const headers = ["Employee ID", "Name", "Base Salary", "TDS Deductions (10%)", "ESIC (0.75%)", "PF (12%)", "Net Take-Home"];
-              const rows = employees.map(e => ["STU0001", "STU0002"].includes(e.id) 
-                ? [e.id, e.name, "45000", "4500", "337", "5400", "34763"]
-                : [e.id, e.name, "35000", "3500", "262", "4200", "27038"]
-              );
-              const content = [headers.join(','), ...rows.map(r => r.map(v => `"${v}"`).join(','))].join('\n');
-              const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
-              const lnk = document.createElement('a'); lnk.href = URL.createObjectURL(blob);
-              lnk.download = "Salary_TDS_PF_Compliance_Ledger.csv"; lnk.click();
-            }}
-            className="inline-flex items-center space-x-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition shadow-sm"
-          >
-            <span>📥 Export Payroll Logs</span>
+        <div className="min-w-[200px]">
+          <button className="w-full px-4 py-2.5 text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 shadow-sm transition-all text-center">
+            Download Payroll Logs
           </button>
-          <button 
-            onClick={() => {
-              const headers = ["Employee ID", "Name", "Department", "Status", "Medical Balances", "Casual Balances", "Late Incidents"];
-              const rows = employees.map(e => [e.id, e.name, e.domain, e.status, e.medicalLeavesLeft, e.casualLeavesLeft, e.lateCount]);
-              const content = [headers.join(','), ...rows.map(r => r.map(v => `"${v}"`).join(','))].join('\n');
-              const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
-              const lnk = document.createElement('a'); lnk.href = URL.createObjectURL(blob);
-              lnk.download = "Global_Attendance_Audit.csv"; lnk.click();
-            }}
-            className="inline-flex items-center space-x-1.5 px-4 py-2 border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 rounded-xl text-xs font-bold transition shadow-sm"
-          >
-            <span>📥 Export Attendance CSV</span>
-          </button>
-        </div>
-      </div>
-
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-full border-collapse text-left text-sm">
-          <thead>
-            <tr className="border-b border-slate-100 bg-slate-50/40 text-slate-500 font-semibold text-[11px] uppercase tracking-wider">
-              <th className="px-6 py-4">ID</th>
-              <th className="px-6 py-4">Staff Member</th>
-              <th className="px-6 py-4">Base Gross</th>
-              <th className="px-6 py-4">TDS (10%)</th>
-              <th className="px-6 py-4">ESIC (0.75%)</th>
-              <th className="px-6 py-4">PF (12%)</th>
-              <th className="px-6 py-4">Net Paycheck</th>
-              <th className="px-6 py-4">Active Roster Metrics</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-slate-100 text-slate-700 font-medium">
-            {employees.slice(0, 5).map(e => {
-              const isHighScale = ["STU0001", "STU0002"].includes(e.id);
-              return (
-                <tr key={e.id} className="transition-colors hover:bg-slate-50/40">
-                  <td className="whitespace-nowrap px-6 py-4 font-mono text-xs text-slate-400">{e.id}</td>
-                  <td className="whitespace-nowrap px-6 py-4 font-bold text-slate-900">{e.name}</td>
-                  <td className="whitespace-nowrap px-6 py-4">₹{isHighScale ? "45,000" : "35,000"}</td>
-                  <td className="whitespace-nowrap px-6 py-4 text-rose-600 font-semibold">-{isHighScale ? "₹4,500" : "₹3,500"}</td>
-                  <td className="whitespace-nowrap px-6 py-4 text-slate-500">-{isHighScale ? "₹337" : "₹262"}</td>
-                  <td className="whitespace-nowrap px-6 py-4 text-slate-500">-{isHighScale ? "₹5,400" : "₹4,200"}</td>
-                  <td className="whitespace-nowrap px-6 py-4 font-extrabold text-emerald-600">₹{isHighScale ? "34,763" : "27,038"}</td>
-                  <td className="whitespace-nowrap px-6 py-4 text-xs text-slate-400">
-                    <div className="flex space-x-2">
-                      <span className="bg-slate-100 px-2 py-0.5 rounded text-slate-600">Med: {e.medicalLeavesLeft}</span>
-                      <span className="bg-slate-100 px-2 py-0.5 rounded text-slate-600">Cas: {e.casualLeavesLeft}</span>
-                      <span className="bg-amber-50 text-amber-700 px-2 py-0.5 rounded font-semibold">Lates: {e.lateCount}</span>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <div className="p-4 bg-slate-50/30 border-t border-slate-100 text-center text-xs font-semibold text-slate-400 uppercase tracking-wider">
-          💡 Showing live table preview rows. Trigger download actions above to pull complete organization dataset.
         </div>
       </div>
     </div>
 
-    {/* Report 3 & 4: Distribution Breakdown Double Component Grid */}
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      
-      {/* Report 3: Domain Metrics Allocation Chart */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex flex-col justify-between">
-        <div>
-          <div className="flex justify-between items-start border-b border-slate-50 pb-3">
-            <div>
-              <h3 className="font-bold text-slate-900 text-base">3. Domain Deployment Audits</h3>
-              <p className="text-xs text-slate-400 mt-0.5">Distribution allocation parameters across organizational roles.</p>
-            </div>
-            <button 
-              onClick={() => {
-                const headers = ["Operating Segment", "Total Active Allocation Headcount"];
-                const rows = [["Software Dev", "18"], ["QA Testing", "7"], ["HR", "6"], ["Marketing", "8"], ["Sales", "7"], ["Support/Finance", "14"]];
-                const content = [headers.join(','), ...rows.map(r => r.map(v => `"${v}"`).join(','))].join('\n');
-                const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
-                const lnk = document.createElement('a'); lnk.href = URL.createObjectURL(blob);
-                lnk.download = "Domain_Allocation_Metrics.csv"; lnk.click();
-              }}
-              className="px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 rounded-xl text-xs font-bold transition shadow-sm"
-            >
-              Export Segments
-            </button>
-          </div>
-          
-          <div className="mt-6 space-y-4">
-            {[
-              { name: "Software Dev", count: 18, color: "bg-blue-500" },
-              { name: "Support/Finance", count: 14, color: "bg-emerald-500" },
-              { name: "Marketing", count: 8, color: "bg-purple-500" },
-              { name: "QA Testing", count: 7, color: "bg-amber-500" },
-              { name: "Sales", count: 7, color: "bg-pink-500" },
-              { name: "HR Operations", count: 6, color: "bg-slate-400" }
-            ].map(d => (
-              <div key={d.name} className="flex items-center text-xs justify-between">
-                <span className="text-slate-600 font-bold w-1/4">{d.name}</span>
-                <div className="flex items-center space-x-3 w-3/4">
-                  <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
-                    <div className={`${d.color} h-full transition-all duration-500`} style={{ width: `${(d.count / 60) * 100}%` }}></div>
-                  </div>
-                  <span className="font-extrabold text-slate-900 w-12 text-right">{d.count} Users</span>
-                </div>
-              </div>
-            ))}
-          </div>
+    {/* Report 2: Attendance & Leave Metrics */}
+    <div className="bg-white border border-gray-100 rounded-xl shadow-sm p-6">
+      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+        <div className="max-w-2xl">
+          <div className="text-xs font-bold text-blue-600 uppercase tracking-wider mb-1">Report 02 • Operations</div>
+          <h3 className="text-lg font-semibold text-slate-800 mb-2">
+            Attendance Metrics & Leave Logs
+          </h3>
+          <p className="text-gray-600 text-sm leading-relaxed">
+            Provides a detailed administrative timeline breakdown of operational time tracking. Compiles comprehensive roster history across crucial performance metrics, monitoring medical leaves, casual leaves, and late arrival tallies.
+          </p>
+        </div>
+        <div className="min-w-[200px]">
+          <button className="w-full px-4 py-2.5 text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 shadow-sm transition-all text-center">
+            Download Attendance CSV
+          </button>
         </div>
       </div>
+    </div>
 
-      {/* Report 4: City Spatial Concentration Metrics */}
-      <div className="bg-white rounded-2xl border border-slate-100 shadow-sm p-6 flex flex-col justify-between">
-        <div>
-          <div className="flex justify-between items-start border-b border-slate-50 pb-3">
-            <div>
-              <h3 className="font-bold text-slate-900 text-base">4. Regional Demographic Footprint</h3>
-              <p className="text-xs text-slate-400 mt-0.5">Demographic concentrations grouped by operational hiring centers.</p>
-            </div>
-            <button 
-              onClick={() => {
-                const headers = ["Hiring Core Hub", "Headcount Capacity Registered"];
-                const rows = [["Indore Core Hub", "26"], ["Mumbai Area", "14"], ["Pune Engineering", "11"], ["Bangalore Annex", "9"]];
-                const content = [headers.join(','), ...rows.map(r => r.map(v => `"${v}"`).join(','))].join('\n');
-                const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
-                const lnk = document.createElement('a'); lnk.href = URL.createObjectURL(blob);
-                lnk.download = "Regional_Demographics_Audit.csv"; lnk.click();
-              }}
-              className="px-3 py-1.5 border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 rounded-xl text-xs font-bold transition shadow-sm"
-            >
-              Export Locations
-            </button>
-          </div>
-          
-          <div className="mt-5 space-y-1 divide-y divide-slate-50">
-            {[
-              { hub: "Indore (Corporate Headquarters Core)", population: 26, fraction: "43.3%" },
-              { hub: "Mumbai (Commercial Operations Base)", population: 14, fraction: "23.3%" },
-              { hub: "Pune (Technology Engineering Operations)", population: 11, fraction: "18.3%" },
-              { hub: "Bangalore (Core Product Development Annex)", population: 9, fraction: "15.0%" }
-            ].map(c => (
-              <div key={c.hub} className="flex items-center justify-between py-3.5 text-xs">
-                <div className="flex items-center space-x-3">
-                  <span className="w-2 h-2 rounded-full bg-blue-600 ring-4 ring-blue-50"></span>
-                  <span className="text-slate-600 font-bold">{c.hub}</span>
-                </div>
-                <div className="text-right">
-                  <span className="font-extrabold text-slate-900">{c.population} Allocated</span>
-                  <span className="text-slate-400 font-semibold ml-2 text-[11px]">({c.fraction})</span>
-                </div>
-              </div>
-            ))}
-          </div>
+    {/* Report 3: Segmented Domain Allocation */}
+    <div className="bg-white border border-gray-100 rounded-xl shadow-sm p-6">
+      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+        <div className="max-w-2xl">
+          <div className="text-xs font-bold text-purple-600 uppercase tracking-wider mb-1">Report 03 • Structure</div>
+          <h3 className="text-lg font-semibold text-slate-800 mb-2">
+            Segmented Domain Allocation Audit
+          </h3>
+          <p className="text-gray-600 text-sm leading-relaxed">
+            Reviews human resource distribution layers across corporate divisions. Maps data segmentation analysis parameters to evaluate headcount saturation, departmental budgets, and resource allocation efficiency.
+          </p>
+        </div>
+        <div className="min-w-[200px]">
+          <button className="w-full px-4 py-2.5 text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 shadow-sm transition-all text-center">
+            Download Allocation Audit
+          </button>
         </div>
       </div>
+    </div>
 
+    {/* Report 4: Base Branch & Location Metrics */}
+    <div className="bg-white border border-gray-100 rounded-xl shadow-sm p-6">
+      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+        <div className="max-w-2xl">
+          <div className="text-xs font-bold text-amber-600 uppercase tracking-wider mb-1">Report 04 • Geography</div>
+          <h3 className="text-lg font-semibold text-slate-800 mb-2">
+            Geographic Branch Distribution Report
+          </h3>
+          <p className="text-gray-600 text-sm leading-relaxed">
+            Compiles regional workforce diagnostics across active operational hubs (such as Indore Hub). Analyzes localized payroll overheads, physical facility compliance metrics, and regional hiring run-rates.
+          </p>
+        </div>
+        <div className="min-w-[200px]">
+          <button className="w-full px-4 py-2.5 text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 shadow-sm transition-all text-center">
+            Download Regional Analytics
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {/* Report 5: Role & Designation Matrix */}
+    <div className="bg-white border border-gray-100 rounded-xl shadow-sm p-6">
+      <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+        <div className="max-w-2xl">
+          <div className="text-xs font-bold text-rose-600 uppercase tracking-wider mb-1">Report 05 • Hierarchy</div>
+          <h3 className="text-lg font-semibold text-slate-800 mb-2">
+            Designation & Role Seniority Audit
+          </h3>
+          <p className="text-gray-600 text-sm leading-relaxed">
+            Evaluates corporate operational layers from entry-level engineers up to executive leadership. Provides metrics on internal promotion pacing, organizational hierarchy spread, and job-title salary banding equity.
+          </p>
+        </div>
+        <div className="min-w-[200px]">
+          <button className="w-full px-4 py-2.5 text-xs font-semibold text-gray-700 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:border-gray-300 shadow-sm transition-all text-center">
+            Download Designation Matrix
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 )}
