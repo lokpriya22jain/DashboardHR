@@ -17,9 +17,25 @@ export function AuthProvider({ children }) {
     }, [token]);
 
     const login = async (email, password) => {
+        // 🟢 1. HARDCODED CREDENTIALS CHECK
+        if (email === "admin@company.com" && password === "admin123") {
+            const mockAdminUser = {
+                name: "Lokpriya Jain",
+                role: "Admin",
+                email: email
+            };
+            
+            localStorage.setItem('token', 'mock-admin-token-xyz123');
+            setToken('mock-admin-token-xyz123');
+            setUser(mockAdminUser);
+            return mockAdminUser;
+        }
+
+        // 🔵 2. FALLBACK TO DATABASE BACKEND
         const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
         const { token: receivedToken, user: userProfile } = response.data;
-       localStorage.setItem('token', receivedToken);
+        
+        localStorage.setItem('token', receivedToken);
         setToken(receivedToken);
         setUser(userProfile);
         return userProfile;
